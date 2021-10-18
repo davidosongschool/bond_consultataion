@@ -24,6 +24,8 @@ const ConsultForm = () => {
     data: null,
   });
 
+  const [useCoupon, setUseCoupon] = useState(false); 
+
   // Control Next Validation
   const [preventNext, setPreventNext] = useState(true);
 
@@ -95,6 +97,8 @@ const ConsultForm = () => {
             preventNext={preventNext}
             setPreventNext={setPreventNext}
             setFormContent={setFormContent}
+            useCoupon={useCoupon}
+            setUseCoupon = {setUseCoupon}
           />
         ) : position === 3 ? (
           <Step3
@@ -128,6 +132,8 @@ const ConsultForm = () => {
             setSuccessMessage={setSuccessMessage}
             successMessage={successMessage}
             storeKey={storeKey}
+            useCoupon={useCoupon}
+            setUseCoupon = {setUseCoupon}
           />
         ) : null}
 

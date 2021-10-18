@@ -1,9 +1,13 @@
 import { Form, Button } from "react-bootstrap";
 import { useEffect } from "react";
 import randomstring from "randomstring";
+import styled from "styled-components";
+
+
 
 const Step2 = (props) => {
   const validate = () => {
+    if (props.useCoupon) {
     if (
       props.formContent.coupon.length > 3 &&
       props.formContent.coupon.length < 9 &&
@@ -15,12 +19,32 @@ const Step2 = (props) => {
     } else {
       props.setPreventNext(true);
     }
+  } else {
+    props.setPreventNext(false);    
+  }
   };
+
+
+
+  const yes_coupon = () => {
+    props.setUseCoupon(true);
+    validate();
+
+  }
+
+  const no_coupon = () => {
+    props.setUseCoupon(false);
+    validate();
+
+  }
+
+
 
   // Run validate when component mounts
   useEffect(() => {
     validate();
   });
+
 
   const generateCoupon = () => {
     const random = randomstring.generate({
@@ -37,7 +61,7 @@ const Step2 = (props) => {
     <div className="div">
       <h2 className="section-title">Introduction</h2>
       <p>
-        Customise the introduction to the consultation. Create a coupon code and
+        Customise the introduction to your email. Create a coupon code and
         set a percentage discount.
       </p>
       <hr />
@@ -56,7 +80,18 @@ const Step2 = (props) => {
             value={props.formContent.intro}
           />
         </Form.Group>
+      <div className="col-12">
+      
+      <Togglebtns>
+       <h2 className="section-title">Would you like to include a coupon code?</h2>
+       <Button className={`btn-primary ${props.useCoupon ? "selected" : "not-selected"}`} onClick={() => yes_coupon()}>Yes</Button>
+       <Button className={`m-2 ${!props.useCoupon ? "selected" : "not-selected"}`} onClick={() => no_coupon()}>No</Button>
 
+       </Togglebtns>
+       </div>
+
+       {props.useCoupon ? 
+       <div>
         <Form.Group className="mb-3">
           <Form.Label>
             Coupon Code (Must be <strong>between 4 and 8 characters</strong>)
@@ -98,9 +133,26 @@ const Step2 = (props) => {
             placeholder="Enter coupon percentage value"
           />
         </Form.Group>
+        </div>
+        : null }
       </Form>
     </div>
   );
 };
+
+const Togglebtns = styled.div`
+
+.selected {
+background-color: green !important;
+border: none;
+}
+
+.not-selected {
+background-color: lightgray !important;
+border: none;
+}
+
+`
+
 
 export default Step2;

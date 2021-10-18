@@ -26,12 +26,14 @@ const Step4 = (props) => {
       '<div style="text-align: center"><img src="https://digitalsalon.ie/wp-content/uploads/2021/09/your-logo.png" style="width: 150px; height 150px;  margin: 0 auto !important; float: center; text-align: center; margin-top: 20px; margin-bottom: 20px;"></div>';
     productsHTML += `<div style="text-align: center"><br/> <br/>Hi <strong>${props.formContent.name}</strong>, <br/><br/></div>`;
     productsHTML += `<div style="text-align: center">${props.formContent.intro}</div>`;
+    if (props.useCoupon === true) {
     productsHTML += `<div style="background-color: #D1E7DD; padding: 10px; margin-top: 20px; border-radius: 10px; text-align: center;"><br/><h2 style="padding-top: 0px; margin-top: 0px;">Coupon</h2><p>Use code <strong>${props.formContent.coupon}</strong> for <strong>${props.formContent.coupon_value}</strong>% off your next purchase!</p></div>`;
+    }
     props.sections.map((section) =>
       section
         ? (productsHTML +=
             `<br /><div>
-        <div style="width: 100%; padding: 6px; background-color: #40376E; color: #fff; text-align: center; border-radius: 10px;"><h1><strong>` +
+        <div style="width: 100%; padding: 6px; background-color: #525F60; color: #fff; text-align: center; border-radius: 10px;"><h1><strong>` +
             section.name +
             `</strong></h1></div>` +
             section.products.map(
@@ -40,13 +42,13 @@ const Step4 = (props) => {
               ) => `<div style="text-align: center"><div style="margin-top: 30px; margin-bottom: 10px;"> <h2> ${product.product_name} </h2> </div>
               <div><img style="width: 300px; height: 300px; border-radius: 3px;" src="${product.product_image}"> </div>
               <div><p style="padding: 10px; white-space: pre-wrap">${product.product_description}<p></div>
-              <a style="text-decoration: none !important;" href="${product.product_link}"><div style="background-color:#6CC840; padding: 10px; border-radius: 20px; font-size: 16px; margin-top: 30px; margin-bottom: 30px; width: 200px; text-align: center; color: #fff !important; margin: 0 auto !important;">Buy Now</div></a></div>
+              <a style="text-decoration: none !important;" href="${product.product_link}"><div style="background-color:#C84630; padding: 10px; border-radius: 20px; font-size: 16px; margin-top: 30px; margin-bottom: 30px; width: 200px; text-align: center; color: #fff !important; margin: 0 auto !important;">Buy Now</div></a></div>
               `
             ) +
             `</div>`)
         : ``
     );
-    productsHTML += `<div style="margin-top: 50px; background-color: #40376E; text-align: center; color: #fff; padding: 8px; width: 100%;"><h3>Thanks ${props.formContent.name} for choosing us</h3></div>`;
+    productsHTML += `<div style="margin-top: 50px; background-color: #525F60; text-align: center; color: #fff; padding: 8px; width: 100%;"><h3>Thanks ${props.formContent.name} for choosing us</h3></div>`;
   };
 
   //delete coupon
@@ -83,7 +85,7 @@ const Step4 = (props) => {
           password: props.storeKey,
         },
       };
-
+      if (props.useCoupon) {
       axios
         .post(
           "https://bondhairhealth.ie/wp-json/wc/v3/coupons",
@@ -135,6 +137,28 @@ const Step4 = (props) => {
           props.setisLoading(false);
         });
     }
+    else {
+      axios
+      .post("https://bondhairhealth.ie/wp-json/wc/v3/custom/", {
+        password: props.storeKey,
+        content: productsHTML,
+        email: props.formContent.email,
+        name: props.formContent.name,
+      })
+      .then((res) => {
+        props.setisLoading(false);
+        console.log(res.data);
+        if (!res.data) {
+          setApiError(
+            "There was an error sending the email! Please check you have entered the email address correctly!"
+          );
+        } else if (res.data) {
+          props.setSuccessMessage(true);
+          setApiError(null);
+        }
+      })
+    }
+  }
   };
 
   const updateDescription = (product_id, product_description) => {
@@ -209,12 +233,14 @@ const Step4 = (props) => {
         <p dangerouslySetInnerHTML={{ __html: props.formContent.intro }}></p>
       </p>
       <br />
+      {props.useCoupon ? 
       <div style={couponstyle}>
         Please use the following coupon code for{" "}
         <strong>{props.formContent.coupon_value}% off </strong>your next
         purchase:
         <strong> {props.formContent.coupon}</strong>
       </div>
+      : null }
       <br />
       {props.sections
         ? props.sections.map((section) => (
@@ -299,7 +325,7 @@ const Step4 = (props) => {
           </Modal.Footer>
         </Modal>
       </ContainModal>
-      <div class="col-12 text-center">
+      <div className="col-12 text-center">
         <hr/>
       <Button
         className="mt-3 mb-5 btn-success mx-auto p-3"
