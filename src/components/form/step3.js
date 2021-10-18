@@ -57,7 +57,7 @@ const Step3 = (props) => {
     if (searchTerm.length > 0) {
       axios
         .get(
-          `https://truahair.ie/wp-json/wc/v3/products?search=${searchTerm}&consumer_key=ck_6138cb16f2484fd1f5acb447f6eaa82f2b2900c8&consumer_secret=${props.storeKey}`
+          `https://bondhairhealth.ie/wp-json/wc/v3/products?search=${searchTerm}&consumer_key=ck_54a3e1aeda8c469900896bc89908867caf60e4ba&consumer_secret=${props.storeKey}`
         )
         .then((res) => {
           props.setShowLoading(false);

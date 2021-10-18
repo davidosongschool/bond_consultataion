@@ -37,15 +37,7 @@ const ConsultForm = () => {
     email: "",
     coupon: "",
     coupon_value: "",
-    intro: `It was lovely to meet you. Thank you so much. We hope you found it helpful.
-
-I have collated the products we spoke about.
-   
-{INSERT MESSAGE HERE}
-
-Thank you 
-
-`,
+    intro: ``,
   });
 
   const [sections, setSections] = useState([]);
@@ -180,7 +172,7 @@ Thank you
               <strong>Great Job!</strong>
             </h2>
             <p>
-              Your consultation has been sent successfully to{" "}
+              Your email has been sent successfully to{" "}
               <strong>{formContent.email}</strong>
             </p>
             <p className="text-muted pb-3">

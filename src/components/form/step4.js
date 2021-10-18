@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React from "react";
-import { Button, Modal, Form, Alert } from "react-bootstrap";
+import { Button, Modal, Alert } from "react-bootstrap";
 import { useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import axios from "axios";
@@ -53,13 +53,13 @@ const Step4 = (props) => {
   const deleteCoupon = (id) => {
     let config = {
       auth: {
-        username: "ck_6138cb16f2484fd1f5acb447f6eaa82f2b2900c8",
+        username: "ck_54a3e1aeda8c469900896bc89908867caf60e4ba",
         password: props.storeKey,
       },
     };
     axios
       .delete(
-        `https://truahair.ie/wp-json/wc/v3/coupons/${id}?force=true`,
+        `https://bondhairhealth.ie/wp-json/wc/v3/coupons/${id}?force=true`,
         config
       )
       .then((res) => {
@@ -79,14 +79,14 @@ const Step4 = (props) => {
       props.setisLoading(true);
       let config = {
         auth: {
-          username: "ck_6138cb16f2484fd1f5acb447f6eaa82f2b2900c8",
+          username: "ck_54a3e1aeda8c469900896bc89908867caf60e4ba",
           password: props.storeKey,
         },
       };
 
       axios
         .post(
-          "https://truahair.ie/wp-json/wc/v3/coupons",
+          "https://bondhairhealth.ie/wp-json/wc/v3/coupons",
           {
             code: props.formContent.coupon,
             discount_type: "percent",
@@ -104,7 +104,7 @@ const Step4 = (props) => {
           // Store id of coupon created incase of email failure
           couponid = res.data.id;
           axios
-            .post("https://truahair.ie/wp-json/wc/v3/custom/", {
+            .post("https://bondhairhealth.ie/wp-json/wc/v3/custom/", {
               password: props.storeKey,
               content: productsHTML,
               email: props.formContent.email,
@@ -167,7 +167,7 @@ const Step4 = (props) => {
   };
 
   const headingstyle = {
-    backgroundColor: "#40376E",
+    backgroundColor: "#525F60",
     padding: "6px",
     borderRadius: "10px",
     textAlign: "center",
@@ -178,8 +178,7 @@ const Step4 = (props) => {
     <div>
       <h2 className="section-title">Review</h2>
       <p>
-        Review your consultation and send to the customer. You'll need your
-        secret key to send the email!
+        Review your email and send to the customer!
       </p>
       <hr />
       <p>
@@ -300,13 +299,16 @@ const Step4 = (props) => {
           </Modal.Footer>
         </Modal>
       </ContainModal>
+      <div class="col-12 text-center">
+        <hr/>
       <Button
-        className="mt-3 mb-5 btn-success"
+        className="mt-3 mb-5 btn-success mx-auto p-3"
         onClick={() => submitConsultation()}
         disabled={props.isLoading}
       >
         Submit Consultation
       </Button>
+      </div>
       {apiError === "success" ? (
         <Alert variant="success">
           Consultation has been sent to {props.formContent.email}
