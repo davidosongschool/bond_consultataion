@@ -23,7 +23,7 @@ const Step4 = (props) => {
 
   const setEmailHTML = () => {
     productsHTML +=
-      '<div style="text-align: center"><img src="https://digitalsalon.ie/wp-content/uploads/2021/09/your-logo.png" style="width: 150px; height 150px;  margin: 0 auto !important; float: center; text-align: center; margin-top: 20px; margin-bottom: 20px;"></div>';
+      '<div style="text-align: center"><img src="https://bondhairhealth.ie/wp-content/uploads/2020/11/Untitled-design-72.png" style="width: 150px; height 150px;  margin: 0 auto !important; float: center; text-align: center; margin-top: 20px; margin-bottom: 20px;"></div>';
     productsHTML += `<div style="text-align: center"><br/> <br/>Hi <strong>${props.formContent.name}</strong>, <br/><br/></div>`;
     productsHTML += `<div style="text-align: center">${props.formContent.intro}</div>`;
     if (props.useCoupon === true) {
@@ -332,12 +332,12 @@ const Step4 = (props) => {
         onClick={() => submitConsultation()}
         disabled={props.isLoading}
       >
-        Submit Consultation
+        Send Email
       </Button>
       </div>
       {apiError === "success" ? (
         <Alert variant="success">
-          Consultation has been sent to {props.formContent.email}
+          Email has been sent to {props.formContent.email}
         </Alert>
       ) : apiError ? (
         <Alert variant="danger">{apiError}</Alert>
