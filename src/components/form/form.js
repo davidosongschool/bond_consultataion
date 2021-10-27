@@ -24,7 +24,7 @@ const ConsultForm = () => {
     data: null,
   });
 
-  const [useCoupon, setUseCoupon] = useState(false); 
+  const [useCoupon, setUseCoupon] = useState(false);
 
   // Control Next Validation
   const [preventNext, setPreventNext] = useState(true);
@@ -39,7 +39,9 @@ const ConsultForm = () => {
     email: "",
     coupon: "",
     coupon_value: "",
-    intro: ``,
+    intro: `We’re delighted you’re considering becoming part of our Bond Health family! See below our recommendations on products and services for you to consider.
+    
+Team Bond`,
   });
 
   const [sections, setSections] = useState([]);
@@ -98,7 +100,7 @@ const ConsultForm = () => {
             setPreventNext={setPreventNext}
             setFormContent={setFormContent}
             useCoupon={useCoupon}
-            setUseCoupon = {setUseCoupon}
+            setUseCoupon={setUseCoupon}
           />
         ) : position === 3 ? (
           <Step3
@@ -133,7 +135,7 @@ const ConsultForm = () => {
             successMessage={successMessage}
             storeKey={storeKey}
             useCoupon={useCoupon}
-            setUseCoupon = {setUseCoupon}
+            setUseCoupon={setUseCoupon}
           />
         ) : null}
 

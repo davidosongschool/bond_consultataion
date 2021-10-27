@@ -27,7 +27,7 @@ const Step4 = (props) => {
     productsHTML += `<div style="text-align: center"><br/> <br/>Hi <strong>${props.formContent.name}</strong>, <br/><br/></div>`;
     productsHTML += `<div style="text-align: center">${props.formContent.intro}</div>`;
     if (props.useCoupon === true) {
-    productsHTML += `<div style="background-color: #D1E7DD; padding: 10px; margin-top: 20px; border-radius: 10px; text-align: center;"><br/><h2 style="padding-top: 0px; margin-top: 0px;">Coupon</h2><p>Use code <strong>${props.formContent.coupon}</strong> for <strong>${props.formContent.coupon_value}</strong>% off your next purchase!</p></div>`;
+      productsHTML += `<div style="background-color: #D1E7DD; padding: 10px; margin-top: 20px; border-radius: 10px; text-align: center;"><br/><h2 style="padding-top: 0px; margin-top: 0px;">Coupon</h2><p>Use code <strong>${props.formContent.coupon}</strong> for <strong>${props.formContent.coupon_value}</strong>% off your next purchase!</p></div>`;
     }
     props.sections.map((section) =>
       section
@@ -48,7 +48,7 @@ const Step4 = (props) => {
             `</div>`)
         : ``
     );
-    productsHTML += `<div style="margin-top: 50px; background-color: #525F60; text-align: center; color: #fff; padding: 8px; width: 100%;"><h3>Thanks ${props.formContent.name} for choosing us</h3></div>`;
+    productsHTML += `<div style="margin-top: 50px; background-color: #525F60; text-align: center; color: #fff; padding: 8px; width: 100%;"><h3>Thanks ${props.formContent.name} for choosing health</h3></div>`;
   };
 
   //delete coupon
@@ -86,79 +86,78 @@ const Step4 = (props) => {
         },
       };
       if (props.useCoupon) {
-      axios
-        .post(
-          "https://bondhairhealth.ie/wp-json/wc/v3/coupons",
-          {
-            code: props.formContent.coupon,
-            discount_type: "percent",
-            amount: props.formContent.coupon_value,
-            individual_use: true,
-            exclude_sale_items: false,
-            minimum_amount: "0",
-            usage_limit_per_user: "1",
-            usage_limit: "1",
-          },
-          config
-        )
-        .then((res) => {
-          console.log(res.data);
-          // Store id of coupon created incase of email failure
-          couponid = res.data.id;
-          axios
-            .post("https://bondhairhealth.ie/wp-json/wc/v3/custom/", {
-              password: props.storeKey,
-              content: productsHTML,
-              email: props.formContent.email,
-              name: props.formContent.name,
-            })
-            .then((res) => {
-              props.setisLoading(false);
-              console.log(res.data);
-              if (!res.data) {
-                setApiError(
-                  "There was an error sending the email! Please check you have entered the email address correctly!"
-                );
-                deleteCoupon(couponid);
-              } else if (res.data) {
-                props.setSuccessMessage(true);
-                setApiError(null);
-              }
-            })
-            .catch((e) => {
-              props.setisLoading(false);
-              setApiError(e);
-              deleteCoupon();
-            });
-        })
-        .catch((e) => {
-          console.log(e.response.data.message);
-          setApiError(e.response.data.message);
-          props.setisLoading(false);
-        });
+        axios
+          .post(
+            "https://bondhairhealth.ie/wp-json/wc/v3/coupons",
+            {
+              code: props.formContent.coupon,
+              discount_type: "percent",
+              amount: props.formContent.coupon_value,
+              individual_use: true,
+              exclude_sale_items: false,
+              minimum_amount: "0",
+              usage_limit_per_user: "1",
+              usage_limit: "1",
+            },
+            config
+          )
+          .then((res) => {
+            console.log(res.data);
+            // Store id of coupon created incase of email failure
+            couponid = res.data.id;
+            axios
+              .post("https://bondhairhealth.ie/wp-json/wc/v3/custom/", {
+                password: props.storeKey,
+                content: productsHTML,
+                email: props.formContent.email,
+                name: props.formContent.name,
+              })
+              .then((res) => {
+                props.setisLoading(false);
+                console.log(res.data);
+                if (!res.data) {
+                  setApiError(
+                    "There was an error sending the email! Please check you have entered the email address correctly!"
+                  );
+                  deleteCoupon(couponid);
+                } else if (res.data) {
+                  props.setSuccessMessage(true);
+                  setApiError(null);
+                }
+              })
+              .catch((e) => {
+                props.setisLoading(false);
+                setApiError(e);
+                deleteCoupon();
+              });
+          })
+          .catch((e) => {
+            console.log(e.response.data.message);
+            setApiError(e.response.data.message);
+            props.setisLoading(false);
+          });
+      } else {
+        axios
+          .post("https://bondhairhealth.ie/wp-json/wc/v3/custom/", {
+            password: props.storeKey,
+            content: productsHTML,
+            email: props.formContent.email,
+            name: props.formContent.name,
+          })
+          .then((res) => {
+            props.setisLoading(false);
+            console.log(res.data);
+            if (!res.data) {
+              setApiError(
+                "There was an error sending the email! Please check you have entered the email address correctly!"
+              );
+            } else if (res.data) {
+              props.setSuccessMessage(true);
+              setApiError(null);
+            }
+          });
+      }
     }
-    else {
-      axios
-      .post("https://bondhairhealth.ie/wp-json/wc/v3/custom/", {
-        password: props.storeKey,
-        content: productsHTML,
-        email: props.formContent.email,
-        name: props.formContent.name,
-      })
-      .then((res) => {
-        props.setisLoading(false);
-        console.log(res.data);
-        if (!res.data) {
-          setApiError(
-            "There was an error sending the email! Please check you have entered the email address correctly!"
-          );
-        } else if (res.data) {
-          props.setSuccessMessage(true);
-          setApiError(null);
-        }
-      })
-    }
-  }
   };
 
   const updateDescription = (product_id, product_description) => {
@@ -201,9 +200,7 @@ const Step4 = (props) => {
   return (
     <div>
       <h2 className="section-title">Review</h2>
-      <p>
-        Review your email and send to the customer!
-      </p>
+      <p>Review your email and send to the customer!</p>
       <hr />
       <p>
         To:{" "}
@@ -233,14 +230,14 @@ const Step4 = (props) => {
         <p dangerouslySetInnerHTML={{ __html: props.formContent.intro }}></p>
       </p>
       <br />
-      {props.useCoupon ? 
-      <div style={couponstyle}>
-        Please use the following coupon code for{" "}
-        <strong>{props.formContent.coupon_value}% off </strong>your next
-        purchase:
-        <strong> {props.formContent.coupon}</strong>
-      </div>
-      : null }
+      {props.useCoupon ? (
+        <div style={couponstyle}>
+          Please use the following coupon code for{" "}
+          <strong>{props.formContent.coupon_value}% off </strong>your next
+          purchase:
+          <strong> {props.formContent.coupon}</strong>
+        </div>
+      ) : null}
       <br />
       {props.sections
         ? props.sections.map((section) => (
@@ -326,14 +323,14 @@ const Step4 = (props) => {
         </Modal>
       </ContainModal>
       <div className="col-12 text-center">
-        <hr/>
-      <Button
-        className="mt-3 mb-5 btn-success mx-auto p-3"
-        onClick={() => submitConsultation()}
-        disabled={props.isLoading}
-      >
-        Send Email
-      </Button>
+        <hr />
+        <Button
+          className="mt-3 mb-5 btn-success mx-auto p-3"
+          onClick={() => submitConsultation()}
+          disabled={props.isLoading}
+        >
+          Send Email
+        </Button>
       </div>
       {apiError === "success" ? (
         <Alert variant="success">
