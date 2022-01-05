@@ -48,6 +48,7 @@ const Step4 = (props) => {
             `</div>`)
         : ``
     );
+    productsHTML += `<div style="margin-top: 30px; text-align: center; width: 100%; color: #000;"><p>Our initial advice is that you should always seek medical advice from your doctor. The recommendations provided by Bond Hair Health are from a holistic perspective and supplementary to and not intended to precede or substitute a doctors medical advice.</p></div>`;
     productsHTML += `<div style="margin-top: 50px; background-color: #525F60; text-align: center; color: #fff; padding: 8px; width: 100%;"><h3>Thanks ${props.formContent.name} for choosing health</h3></div>`;
   };
 
